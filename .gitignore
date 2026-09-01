@@ -1,0 +1,5 @@
+# Large source renders — optimized WebP in assets/web is what ships
+assets/*.png
+assets/Codex*.png
+.deploy/
+.DS_Store

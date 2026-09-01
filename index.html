@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tidepine — A Downeast Maine Retreat</title>
+  <meta name="description" content="Tidepine — a private cabin retreat on the Downeast Maine coast. Book your stay." />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Archivo+Black&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <a class="nav-logo" href="#top">TIDEPINE</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#amenities">Amenities</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#area">Location</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-right">
+      <a class="btn-book" href="#book">Book</a>
+      <button class="nav-burger" id="burger" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ FULLSCREEN MENU ============ -->
+  <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" aria-hidden="true">
+    <nav class="menu-links" aria-label="Menu">
+      <a href="#about" style="--i:0">About</a>
+      <a href="#amenities" style="--i:1">Amenities</a>
+      <a href="#gallery" style="--i:2">Gallery</a>
+      <a href="#area" style="--i:3">Location</a>
+      <a href="#book" style="--i:4">Book a stay</a>
+    </nav>
+    <p class="menu-foot">Tidepine &middot; Maine &middot; hello@tidepine.com</p>
+  </div>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero" aria-label="Tidepine">
+      <div class="hero-stage">
+        <div class="hero-media" id="heroMedia">
+          <img class="hero-img" src="assets/web/hero.webp" alt="Tidepine glowing at dusk among the pines, lake behind" fetchpriority="high" />
+          <div class="hero-shade"></div>
+        </div>
+        <div class="hero-copy" id="heroCopy">
+          <h1 class="hero-title" id="heroTitle">TIDEPINE</h1>
+        </div>
+        <div class="hero-fg" id="heroFg" aria-hidden="true">
+          <img class="hero-img" src="assets/hero-cutout.webp" alt="" />
+        </div>
+        <div class="hero-blend" aria-hidden="true"></div>
+        <p class="hero-tagline" id="heroTagline">Where the pines meet the tide</p>
+        <p class="hero-kicker" id="heroKicker">Downeast &middot; Maine &middot; USA</p>
+        <div class="hero-cue" id="heroCue">
+          <span>Discover the cabin</span>
+          <div class="cue-line"><i></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FACT STRIP ============ -->
+    <section class="facts" aria-label="Cabin at a glance">
+      <div class="facts-grid stagger">
+        <div class="fact reveal"><span class="fact-num">6</span><span class="fact-label">Guests</span></div>
+        <div class="fact reveal"><span class="fact-num">3</span><span class="fact-label">Bedrooms</span></div>
+        <div class="fact reveal"><span class="fact-num">2</span><span class="fact-label">Baths</span></div>
+        <div class="fact reveal"><span class="fact-num">4.98&#9733;</span><span class="fact-label">Guest rating</span></div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="section about" id="about">
+      <div class="section-head">
+        <p class="kicker reveal">01 &middot; The Cabin</p>
+        <h2 class="headline">
+          <span class="line"><span class="line-inner">MORE THAN JUST</span></span>
+          <span class="line"><span class="line-inner"><em>a place to stay</em></span></span>
+        </h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-copy reveal">
+          <p class="lede">Tucked into the spruce on the Maine coast, Tidepine is a hand-built retreat made for slow mornings, salt air, and long evenings by the fire. Placeholder copy &mdash; the real story of the cabin goes here.</p>
+          <ul class="checklist">
+            <li><span>+</span>Private, wooded setting &mdash; no neighbors in sight</li>
+            <li><span>+</span>Minutes from the water and hiking trails</li>
+            <li><span>+</span>Thoughtfully stocked for cooks and coffee drinkers</li>
+            <li><span>+</span>Self check-in, flexible arrivals</li>
+          </ul>
+        </div>
+        <div class="about-media reveal">
+          <figure class="photo photo-tall">
+            <img src="assets/web/living.webp" alt="Living room with stone fireplace and cathedral pine ceiling" loading="lazy" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ AMENITIES ============ -->
+    <section class="section amenities" id="amenities">
+      <div class="section-head">
+        <p class="kicker reveal">02 &middot; Amenities</p>
+        <h2 class="headline">
+          <span class="line"><span class="line-inner">EVERYTHING YOU NEED,</span></span>
+          <span class="line"><span class="line-inner"><em>nothing you don&rsquo;t</em></span></span>
+        </h2>
+      </div>
+      <div class="amenity-grid stagger">
+        <div class="amenity reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3v7M4.5 3v4a2.5 2.5 0 0 0 5 0V3M7 10v11M17 3c-2 2-2.5 6-2.5 8H17v10"/></svg>
+          <h3>Full Kitchen</h3>
+          <p>Range, oven, cookware, and a real coffee setup. Placeholder.</p>
+        </div>
+        <div class="amenity reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor" stroke="none"/></svg>
+          <h3>Fast Wi-Fi</h3>
+          <p>Strong enough to work remotely from the deck. Placeholder.</p>
+        </div>
+        <div class="amenity reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-5 .5 1.5 1.5 2 2.5 2C10.5 8 11 5 12 3z"/></svg>
+          <h3>Wood Stove</h3>
+          <p>Firewood provided &mdash; the cabin&rsquo;s warm heart. Placeholder.</p>
+        </div>
+        <div class="amenity reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c.8 2.2 3.5 3.6 3.5 7a3.5 3.5 0 0 1-7 0c0-1.4.7-2.4 1.4-3.5.35 1 1 1.4 1.7 1.4-.6-1.7-.3-3.4.4-4.9z"/><path d="M5 21l6-4.5M19 21l-6-4.5M7.5 19.5L19 21M16.5 19.5L5 21"/></svg>
+          <h3>Fire Pit</h3>
+          <p>Stone circle under the stars, chairs included. Placeholder.</p>
+        </div>
+        <div class="amenity reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9.5" r="5.5"/><path d="M12 15v6M8.5 21h7M8.2 13.8L5.5 18.5M15.8 13.8l2.7 4.7"/></svg>
+          <h3>Deck &amp; Grill</h3>
+          <p>Charcoal kettle and a table that seats six. Placeholder.</p>
+        </div>
+        <div class="amenity reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="13" r="5"/><circle cx="7.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg>
+          <h3>Washer &amp; Dryer</h3>
+          <p>Pack light, stay longer. Placeholder.</p>
+        </div>
+        <div class="amenity reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M9 21h6"/></svg>
+          <h3>Smart TV</h3>
+          <p>Stream your own accounts on rainy nights. Placeholder.</p>
+        </div>
+        <div class="amenity reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M9.5 17V7h3.5a3 3 0 0 1 0 6H9.5"/></svg>
+          <h3>Free Parking</h3>
+          <p>Private drive with room for two cars. Placeholder.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GALLERY (scroll-scrubbed rail) ============ -->
+    <section class="gallery" id="gallery" aria-label="Photo gallery">
+      <div class="gallery-pin">
+        <div class="gallery-head">
+          <div>
+            <p class="kicker reveal">03 &middot; Gallery</p>
+            <h2 class="headline">
+              <span class="line"><span class="line-inner">A LOOK <em>inside</em></span></span>
+            </h2>
+          </div>
+          <p class="gallery-count" aria-hidden="true"><span id="galleryCount">01</span>&nbsp;/&nbsp;10</p>
+        </div>
+        <div class="gallery-track" id="galleryTrack">
+          <figure class="gcard gcard-wide">
+            <div class="photo"><img src="assets/web/hero.webp" alt="Cabin exterior at dusk" loading="lazy" /></div>
+            <figcaption>01 &mdash; Exterior</figcaption>
+          </figure>
+          <figure class="gcard gcard-tall">
+            <div class="photo"><img src="assets/web/living.webp" alt="Living room and stone fireplace" loading="lazy" /></div>
+            <figcaption>02 &mdash; Living room</figcaption>
+          </figure>
+          <figure class="gcard gcard-wide">
+            <div class="photo"><img src="assets/web/kitchen.webp" alt="Kitchen with island seating" loading="lazy" /></div>
+            <figcaption>03 &mdash; Kitchen</figcaption>
+          </figure>
+          <figure class="gcard gcard-tall">
+            <div class="photo"><img src="assets/web/bedroom.webp" alt="Bedroom with plaid bedding" loading="lazy" /></div>
+            <figcaption>04 &mdash; Bedroom</figcaption>
+          </figure>
+          <figure class="gcard gcard-wide">
+            <div class="photo"><img src="assets/web/porch.webp" alt="Wraparound covered porch at dusk" loading="lazy" /></div>
+            <figcaption>05 &mdash; Porch</figcaption>
+          </figure>
+          <figure class="gcard gcard-tall">
+            <div class="photo"><img src="assets/web/bath.webp" alt="Bathroom with soaking tub and stone wall" loading="lazy" /></div>
+            <figcaption>06 &mdash; Bath</figcaption>
+          </figure>
+          <figure class="gcard gcard-wide">
+            <div class="photo"><img src="assets/web/dining.webp" alt="Dining table under an iron chandelier" loading="lazy" /></div>
+            <figcaption>07 &mdash; Dining</figcaption>
+          </figure>
+          <figure class="gcard gcard-tall">
+            <div class="photo"><img src="assets/web/loft.webp" alt="Sleeping loft under timber trusses" loading="lazy" /></div>
+            <figcaption>08 &mdash; Loft</figcaption>
+          </figure>
+          <figure class="gcard gcard-wide">
+            <div class="photo"><img src="assets/web/firepit.webp" alt="Stone fire pit burning at night" loading="lazy" /></div>
+            <figcaption>09 &mdash; Fire pit</figcaption>
+          </figure>
+          <figure class="gcard gcard-wide">
+            <div class="photo"><img src="assets/web/deck.webp" alt="Deck with string lights over the lake" loading="lazy" /></div>
+            <figcaption>10 &mdash; The view</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ AREA ============ -->
+    <section class="section area" id="area">
+      <div class="section-head">
+        <p class="kicker reveal">04 &middot; The Area</p>
+        <h2 class="headline">
+          <span class="line"><span class="line-inner">DOWNEAST MAINE,</span></span>
+          <span class="line"><span class="line-inner"><em>out the door</em></span></span>
+        </h2>
+      </div>
+
+      <dl class="drives stagger" aria-label="Drive times">
+        <div class="drive reveal"><dt>15<span>min</span></dt><dd>Acadia National Park entrance</dd></div>
+        <div class="drive reveal"><dt>20<span>min</span></dt><dd>Bar Harbor shops &amp; restaurants</dd></div>
+        <div class="drive reveal"><dt>5<span>min</span></dt><dd>General store &amp; lobster pound</dd></div>
+        <div class="drive reveal"><dt>50<span>min</span></dt><dd>Bangor International Airport</dd></div>
+      </dl>
+
+      <div class="area-slider reveal">
+        <div class="area-viewport">
+          <div class="area-track" id="areaTrack">
+            <article class="acard">
+              <img class="acard-img" src="assets/web/acadia.webp" alt="" loading="lazy" />
+              <div class="acard-body">
+                <span class="acard-kicker">Hike</span>
+                <h3>Acadia National Park</h3>
+                <p>Granite peaks, carriage roads, and the first sunrise in the U.S.</p>
+              </div>
+            </article>
+            <article class="acard">
+              <img class="acard-img" src="assets/web/barharbor.webp" alt="" loading="lazy" />
+              <div class="acard-body">
+                <span class="acard-kicker">Town</span>
+                <h3>Bar Harbor</h3>
+                <p>Harbor walks, galleries, and ice cream that earns the line.</p>
+              </div>
+            </article>
+            <article class="acard">
+              <img class="acard-img" src="assets/web/lobster.webp" alt="" loading="lazy" />
+              <div class="acard-body">
+                <span class="acard-kicker">Eat</span>
+                <h3>Lobster Pounds</h3>
+                <p>Picnic-table lobster, straight off the boat.</p>
+              </div>
+            </article>
+            <article class="acard">
+              <img class="acard-img" src="assets/web/lake.webp" alt="" loading="lazy" />
+              <div class="acard-body">
+                <span class="acard-kicker">Paddle</span>
+                <h3>The Lake</h3>
+                <p>Kayaks on glass-calm water before the mist burns off.</p>
+              </div>
+            </article>
+            <article class="acard">
+              <img class="acard-img" src="assets/web/cadillac.webp" alt="" loading="lazy" />
+              <div class="acard-body">
+                <span class="acard-kicker">Sunrise</span>
+                <h3>Cadillac Mountain</h3>
+                <p>Drive up in the dark, watch the whole coast light up.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="area-controls">
+          <button class="area-nav" id="areaPrev" aria-label="Previous">&#8592;</button>
+          <button class="area-nav" id="areaNext" aria-label="Next">&#8594;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BOOKING ============ -->
+    <section class="section book" id="book">
+      <p class="kicker reveal">05 &middot; Booking</p>
+      <h2 class="book-line reveal"><em>Your Maine escape is waiting.</em></h2>
+      <p class="book-rate reveal"><strong>$&mdash;&mdash;</strong> / night <span>&middot; placeholder rate</span></p>
+      <div class="book-ctas reveal">
+        <a class="btn-primary" href="#" data-placeholder="airbnb-url">Book on Airbnb <span aria-hidden="true">&#8599;</span></a>
+        <a class="btn-ghost" href="mailto:hello@tidepine.com">Ask a question</a>
+      </div>
+      <p class="book-note reveal">Booking and payment are handled securely through Airbnb.</p>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section faq" id="faq">
+      <div class="section-head">
+        <p class="kicker reveal">06 &middot; FAQ</p>
+        <h2 class="headline">
+          <span class="line"><span class="line-inner">GOOD <em>to know</em></span></span>
+        </h2>
+      </div>
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">What are check-in and check-out times?<span class="faq-x" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>Check-in after 4:00 PM, check-out by 10:00 AM. Self check-in with a smart lock. Placeholder &mdash; confirm actual times.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Is the cabin pet-friendly?<span class="faq-x" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>Placeholder answer &mdash; state your pet policy here.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Is it accessible in winter?<span class="faq-x" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>Placeholder answer &mdash; plowing, 4WD recommendations, seasonal notes.</p></div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">What is the cancellation policy?<span class="faq-x" aria-hidden="true"></span></button>
+          <div class="faq-a"><div><p>Placeholder answer &mdash; link your Airbnb cancellation policy.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <img class="footer-bg" src="assets/web/footer.webp" alt="" aria-hidden="true" fetchpriority="low" decoding="async" />
+    <p class="footer-mark" aria-hidden="true">TIDEPINE</p>
+    <div class="footer-row">
+      <p>&copy; 2026 Tidepine</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#book">Book</a>
+      </nav>
+      <p>Hosted in Maine</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>

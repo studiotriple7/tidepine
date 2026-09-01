@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "eli-cabin",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "python3 -m http.server \"$PORT\" --bind 127.0.0.1"],
+      "port": 4180,
+      "autoPort": true
+    },
+    {
+      "name": "eli-cabin-deploy",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd .deploy && python3 -m http.server \"$PORT\" --bind 127.0.0.1"],
+      "port": 4190,
+      "autoPort": true
+    }
+  ]
+}
