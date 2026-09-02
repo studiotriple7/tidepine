@@ -944,9 +944,26 @@ body::after {
   /* roof climbs from y247 (left) to y96 (right) across the word, so the tail
      tucks behind the house while the rest stays clear */
   .hero-copy { bottom: 84%; }
-  .footer-mark { bottom: 29%; }   /* footer crop differs from desktop */
+  /* centred in the open sky, in front of the treeline (not sunk behind it) */
+  .footer-mark {
+    top: 50%;
+    bottom: auto;
+    translate: 0 -50%;      /* separate property, so JS `transform` still animates */
+    z-index: 5;             /* above trees (2) and the scrim (3) */
+    background: none;
+    -webkit-text-fill-color: var(--ink);
+    color: var(--ink);
+  }
+  /* tagline centred to match */
+  .hero-tagline {
+    left: 0;
+    right: 0;
+    max-width: none;
+    padding: 0 24px;
+    text-align: center;
+  }
   .hero-kicker { display: none; }
-  .hero-tagline { bottom: 132px; max-width: 260px; }
+  .hero-tagline { bottom: 132px; max-width: none; padding: 0 16px; }
 }
 @media (max-width: 640px) {
   .amenity-grid { grid-template-columns: 1fr 1fr; gap: 12px; }

@@ -364,9 +364,14 @@
     } else {
       heroCopy.style.bottom = '';   /* let the mobile flex centring govern */
     }
-    /* footer: treetops crossing well into the word, per the reference */
+    /* footer: treetops crossing well into the word on desktop; mobile centres
+       it in the open sky instead, so leave that placement to CSS */
     const trees = document.querySelector('.footer-trees');
-    if (trees) placeMark(footerMark, footerMark, trees, trees, 0.58, 0.5, 0.45, null, false);
+    if (trees && !isMobile()) {
+      placeMark(footerMark, footerMark, trees, trees, 0.58, 0.5, 0.45, null, false);
+    } else if (trees) {
+      footerMark.style.bottom = '';
+    }
   };
 
   const schedulePlacement = () => requestAnimationFrame(() => requestAnimationFrame(placeWordmarks));
