@@ -3,3 +3,5 @@ assets/*.png
 assets/Codex*.png
 .deploy/
 .DS_Store
+.vercel
+.env*

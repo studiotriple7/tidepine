@@ -1,0 +1,5 @@
+# Source renders — only the optimized WebP in assets/web ships
+assets/*.png
+assets/PROMPTS.md
+.claude/
+.deploy/

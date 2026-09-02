@@ -302,7 +302,10 @@ body::after {
 }
 .hero-copy {
   position: absolute;
-  top: clamp(64px, 9vh, 118px);
+  top: auto;
+  /* sits in the open sky left of the gable; the chimney runs off the top of
+     the frame, so a centred wordmark at this size gets its tail swallowed */
+  bottom: 70%;
   left: 0;
   right: 0;
   z-index: 2;
@@ -326,11 +329,17 @@ body::after {
 .hero-title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(52px, 14.5vw, 234px);
+  /* 20vh cap keeps the cap-height clear of the nav at any viewport:
+     top = 0.30H - 0.92*0.20H = 0.116H, always below the header */
+  font-size: clamp(44px, min(20vw, 20vh), 300px);
   line-height: 0.92;
   letter-spacing: 0.005em;
   color: var(--ink);
   white-space: nowrap;
+}
+.hero-letter {
+  display: inline-block;
+  will-change: transform, opacity;
 }
 .hero-tagline {
   position: absolute;
@@ -814,7 +823,7 @@ body::after {
 .footer {
   position: relative;
   border-top: 1px solid var(--line);
-  padding: clamp(140px, 17vw, 260px) var(--pad-x) 48px;
+  padding: clamp(150px, 18vw, 280px) var(--pad-x) 48px;
   min-height: 66vh;
   display: flex;
   flex-direction: column;
@@ -833,31 +842,61 @@ body::after {
   /* source decodes to ~rgb(8,14,22) — lift it clear of the #050505 page */
   filter: brightness(2.6) saturate(1.2) contrast(1.05);
 }
+.footer-trees {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 58%;
+  filter: brightness(2.6) saturate(1.2) contrast(1.05);
+  pointer-events: none;
+}
 .footer::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 3;
   pointer-events: none;
   background: linear-gradient(
     180deg,
     #050505 0%,
     rgba(5, 5, 5, 0.55) 14%,
-    rgba(5, 5, 5, 0.1) 46%,
+    rgba(5, 5, 5, 0.3) 46%,
     rgba(5, 5, 5, 0.45) 84%,
     rgba(5, 5, 5, 0.8) 100%
   );
 }
-.footer-mark,
-.footer-row { position: relative; z-index: 2; }
+.footer-row { position: relative; z-index: 4; }
+.footer-mark {
+  position: absolute;
+  left: var(--pad-x);
+  right: var(--pad-x);
+  bottom: 26%;            /* measured: buries ~30% of the word in the treeline */
+  z-index: 1;             /* above the sky plate, below the treeline cutout */
+  will-change: transform, opacity;
+  background: linear-gradient(
+    180deg,
+    #fdfcf9 0%,
+    #fdfcf9 42%,
+    #f2efe7 62%,
+    rgba(242, 239, 231, 0.62) 80%,
+    rgba(242, 239, 231, 0.18) 92%,
+    rgba(242, 239, 231, 0) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 4px 26px rgba(0, 0, 0, 0.55)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+}
 .footer-mark {
   font-family: var(--font-display);
   font-size: clamp(48px, 13.2vw, 232px);
   line-height: 0.9;
   text-align: center;
   letter-spacing: 0.005em;
-  color: rgba(242, 239, 231, 0.96);
-  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.6);
   white-space: nowrap;
 }
 .footer-row {
@@ -865,7 +904,7 @@ body::after {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  margin-top: clamp(48px, 6vw, 90px);
+  margin-top: 0;
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -889,7 +928,23 @@ body::after {
   .facts-grid { grid-template-columns: repeat(2, 1fr); }
   .fact:nth-child(3) { border-left: 0; }
   .fact:nth-child(n + 3) { border-top: 1px solid var(--line); }
-  .hero-title { white-space: nowrap; font-size: 17vw; line-height: 0.9; }
+  .hero-title { white-space: nowrap; font-size: 17.5vw; line-height: 0.9; }
+  .hero-copy {
+    inset: 0;
+    bottom: auto;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 6;          /* in front of the cabin cutout */
+    padding: 0 12px;
+  }
+  /* tighter crop puts the roofline higher — lift the wordmark clear of it */
+  /* roof climbs from y247 (left) to y96 (right) across the word, so the tail
+     tucks behind the house while the rest stays clear */
+  .hero-copy { bottom: 84%; }
+  .footer-mark { bottom: 29%; }   /* footer crop differs from desktop */
   .hero-kicker { display: none; }
   .hero-tagline { bottom: 132px; max-width: 260px; }
 }
@@ -902,7 +957,22 @@ body::after {
   .acard { flex-basis: min(80vw, 330px); height: 360px; }
   .drives { gap: 20px; }
   .btn-primary, .btn-ghost { padding: 16px 26px; }
-  .footer-row { justify-content: center; text-align: center; }
+  /* nav first and centred, then the two notes spread left / right */
+  .footer-row {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px 12px;
+    text-align: left;
+  }
+  .footer-links {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+    gap: 26px;
+  }
+  .footer-row > p { margin: 0; }
+  .footer-row > p:last-of-type { text-align: right; }
 }
 
 /* ============ REDUCED MOTION / NO-JS ============ */

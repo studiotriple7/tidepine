@@ -34,6 +34,26 @@
   const galleryTrack = document.getElementById('galleryTrack');
   const galleryCount = document.getElementById('galleryCount');
   const galleryCards = galleryTrack.children.length;
+  const footer = document.querySelector('.footer');
+  const footerMark = document.querySelector('.footer-mark');
+
+  /* Mobile treats the wordmark as individual letters so they can fall away
+     one after another on scroll. */
+  const isMobile = () => matchMedia('(max-width: 900px)').matches;
+  const heroLetters = [];
+  (() => {
+    const text = heroTitle.textContent.trim();
+    heroTitle.setAttribute('aria-label', text);
+    heroTitle.textContent = '';
+    for (const ch of text) {
+      const s = document.createElement('span');
+      s.className = 'hero-letter';
+      s.setAttribute('aria-hidden', 'true');
+      s.textContent = ch;
+      heroTitle.appendChild(s);
+      heroLetters.push(s);
+    }
+  })();
 
   /* ---------- Fullscreen menu (focus-managed) ---------- */
   let menuOpen = false;
@@ -106,7 +126,7 @@
   );
 
   /* ---------- Layout metrics (cached, threshold re-measure) ---------- */
-  let heroScrub = 1, galleryTop = 0, galleryScrub = 1, galleryShift = 0;
+  let heroScrub = 1, galleryTop = 0, galleryScrub = 1, galleryShift = 0, footerTop = 0;
   const measure = () => {
     /* Scrub ranges derive from the actual pinned-stage heights, so
        min-height:600px stages release exactly at p = 1. */
@@ -114,6 +134,7 @@
     galleryTop = gallery.offsetTop;
     galleryScrub = Math.max(1, gallery.offsetHeight - galleryPin.offsetHeight);
     galleryShift = Math.max(0, galleryTrack.scrollWidth - innerWidth + 24);
+    footerTop = footer.offsetTop;
   };
   let lastW = innerWidth, lastH = innerHeight;
   addEventListener(
@@ -128,6 +149,7 @@
         lastH = innerHeight;
         measure();
         updateArea();
+        schedulePlacement();
       }
     },
     { passive: true }
@@ -156,8 +178,8 @@
   const applyReduced = (on) => {
     docEl.classList.toggle('reduced', on);
     if (on) {
-      [heroMedia, heroFg, heroCopy, heroTitle, heroKicker, heroTagline, heroCue, galleryTrack]
-        .forEach((el) => { el.style.cssText = ''; });
+      [heroMedia, heroFg, heroCopy, heroTitle, heroKicker, heroTagline, heroCue, galleryTrack, footerMark]
+        .concat(heroLetters).forEach((el) => { el.style.cssText = ''; });
       setCount(1);
     }
     measure();
@@ -190,10 +212,33 @@
       heroMedia.style.filter = mediaF;
       heroFg.style.transform = mediaT;
       heroFg.style.filter = mediaF;
-      heroCopy.style.transform = 'translate3d(0,' + (exit * -140).toFixed(1) + 'px,0)';
       heroTagline.style.transform = 'translate3d(0,' + (exit * -60).toFixed(1) + 'px,0)';
-      heroTitle.style.transform = 'scale(' + (1 - exit * 0.08).toFixed(4) + ')';
-      heroTitle.style.opacity = (1 - smoothstep(0.2, 0.82, p)).toFixed(3);
+
+      if (isMobile()) {
+        /* letters drop away in sequence as the hero scrolls past */
+        heroCopy.style.transform = 'none';
+        heroTitle.style.transform = 'none';
+        heroTitle.style.opacity = '1';
+        const n = heroLetters.length;
+        const SPREAD = 0.42;   /* how far apart the first and last letter start */
+        const SPAN = 0.28;     /* scroll distance each letter takes to fall */
+        for (let i = 0; i < n; i++) {
+          const delay = (i / n) * SPREAD;
+          const lp = clamp((p - delay) / SPAN);
+          const e = lp * lp;                      /* ease-in: hangs, then drops */
+          const L = heroLetters[i];
+          L.style.transform = 'translate3d(0,' + (e * 190).toFixed(1) + 'px,0)';
+          L.style.opacity = (1 - e).toFixed(3);
+        }
+      } else {
+        heroCopy.style.transform = 'translate3d(0,' + (exit * -140).toFixed(1) + 'px,0)';
+        heroTitle.style.transform = 'scale(' + (1 - exit * 0.08).toFixed(4) + ')';
+        heroTitle.style.opacity = (1 - smoothstep(0.2, 0.82, p)).toFixed(3);
+        for (let i = 0; i < heroLetters.length; i++) {
+          heroLetters[i].style.transform = '';
+          heroLetters[i].style.opacity = '';
+        }
+      }
       const early = 1 - smoothstep(0.03, 0.45, p);
       heroKicker.style.opacity = early.toFixed(3);
       heroTagline.style.opacity = early.toFixed(3);
@@ -203,10 +248,138 @@
       const gp = clamp((sy - galleryTop) / galleryScrub);
       galleryTrack.style.transform = 'translate3d(' + (-gp * galleryShift).toFixed(1) + 'px,0,0)';
       setCount(Math.min(galleryCards, Math.floor(gp * galleryCards) + 1));
+
+      /* Footer wordmark settles down into the treeline as the footer arrives.
+         Driven off the lerped sy so it inherits the same easing as the rest. */
+      const fTop = footerTop - sy;
+      const fp = clamp((innerHeight - fTop) / (innerHeight * 0.72));
+      const fe = fp * fp * (3 - 2 * fp);
+      footerMark.style.transform = 'translate3d(0,' + ((1 - fe) * -110).toFixed(1) + 'px,0)';
+      footerMark.style.opacity = (0.18 + fe * 0.82).toFixed(3);
     }
 
     requestAnimationFrame(frame);
   };
+
+  /* ---------- Silhouette-aware wordmark placement ----------
+     The hero cutout and the footer treeline are photographs, so where the
+     roofline / treetops fall depends on how `object-fit: cover` crops them
+     at the current viewport. Hard-coded percentages only hold for the exact
+     sizes they were measured at, so instead we read the alpha channel and
+     place each wordmark against the real silhouette. */
+  const edgeCache = new Map();
+
+  const silhouetteTops = (img, box, objPosY, xFrom, xTo) => {
+    if (!img.complete || !img.naturalWidth) return null;
+    const bw = box.offsetWidth, bh = box.offsetHeight;
+    const iw = img.naturalWidth, ih = img.naturalHeight;
+    if (!bw || !bh) return null;
+
+    const key = img.src + '|' + iw + 'x' + ih;
+    let tops = edgeCache.get(key);
+    if (!tops) {
+      /* topmost opaque row per image column — computed once per image */
+      const cv = document.createElement('canvas');
+      cv.width = iw; cv.height = ih;
+      const cx = cv.getContext('2d', { willReadFrequently: true });
+      cx.drawImage(img, 0, 0);
+      let data;
+      try { data = cx.getImageData(0, 0, iw, ih).data; } catch (e) { return null; }
+      tops = new Int32Array(iw).fill(-1);
+      for (let x = 0; x < iw; x++) {
+        for (let y = 0; y < ih; y++) {
+          if (data[(y * iw + x) * 4 + 3] > 128) { tops[x] = y; break; }
+        }
+      }
+      edgeCache.set(key, tops);
+    }
+
+    const scale = Math.max(bw / iw, bh / ih);
+    const offX = (bw - iw * scale) * 0.5;
+    const offY = (bh - ih * scale) * objPosY;
+    const boxRect = box.getBoundingClientRect();
+    const out = [];
+    for (let sx = Math.floor(xFrom); sx <= Math.ceil(xTo); sx += 3) {
+      const ix = Math.round((sx - boxRect.left - offX) / scale);
+      if (ix < 0 || ix >= iw) continue;
+      const iy = tops[ix];
+      if (iy < 0) continue;                       /* open sky in this column */
+      out.push(boxRect.top + offY + iy * scale);
+    }
+    return out.length ? out.sort((a, b) => a - b) : null;
+  };
+
+  const pct = (sorted, p) => sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))];
+
+  /* Shift a wordmark's container so the GLYPHS land at a target Y. */
+  const placeMark = (container, textEl, img, imgBox, objPosY, pick, bury, minTopY, tailGuard) => {
+    if (!img || !imgBox) return;
+    const savedT = container.style.transform;
+    const savedO = container.style.opacity;
+    container.style.transform = 'none';
+    container.style.opacity = '0';
+
+    const range = document.createRange();
+    range.selectNodeContents(textEl);
+    const g = range.getBoundingClientRect();
+    if (!g.width || !g.height) {
+      container.style.transform = savedT; container.style.opacity = savedO; return;
+    }
+
+    const tops = silhouetteTops(img, imgBox, objPosY, g.left, g.right);
+    if (tops) {
+      const edge = pct(tops, pick);
+      let desiredGlyphBottom = edge + g.height * bury;
+
+      /* Hero only: the roof is a solid mass, so where it climbs steeply the last
+         letters would vanish entirely. Treetops are thin, so the footer wants the
+         opposite — letters sinking into the silhouette stay perfectly readable. */
+      if (tailGuard) {
+        const tail = silhouetteTops(img, imgBox, objPosY, g.right - g.width * 0.3, g.right);
+        if (tail) desiredGlyphBottom = Math.min(desiredGlyphBottom, tail[0] + g.height * 0.5);
+      }
+
+      /* never let the wordmark ride up under the header */
+      if (typeof minTopY === 'number') {
+        desiredGlyphBottom = Math.max(desiredGlyphBottom, minTopY + g.height);
+      }
+      const delta = desiredGlyphBottom - g.bottom;
+      const parentH = container.offsetParent ? container.offsetParent.offsetHeight : innerHeight;
+      const curBottom = parentH - (container.getBoundingClientRect().bottom -
+        (container.offsetParent ? container.offsetParent.getBoundingClientRect().top : 0));
+      container.style.bottom = Math.round(curBottom - delta) + 'px';
+    }
+
+    container.style.transform = savedT;
+    container.style.opacity = savedO;
+  };
+
+  const placeWordmarks = () => {
+    if (docEl.classList.contains('reduced')) return;
+    /* hero: sit just above the roofline, gable tip biting into the letters */
+    if (!isMobile()) {
+      const navBottom = nav.getBoundingClientRect().bottom;
+      const clearance = navBottom + Math.max(26, innerHeight * 0.045);
+      placeMark(heroCopy, heroTitle, heroFg.querySelector('img'), heroFg, 0.38, 0.55, 0.24, clearance, true);
+    } else {
+      heroCopy.style.bottom = '';   /* let the mobile flex centring govern */
+    }
+    /* footer: treetops crossing well into the word, per the reference */
+    const trees = document.querySelector('.footer-trees');
+    if (trees) placeMark(footerMark, footerMark, trees, trees, 0.58, 0.5, 0.45, null, false);
+  };
+
+  const schedulePlacement = () => requestAnimationFrame(() => requestAnimationFrame(placeWordmarks));
+  addEventListener('load', schedulePlacement);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedulePlacement);
+  [heroFg.querySelector('img'), document.querySelector('.footer-trees')].forEach((im) => {
+    if (im && !im.complete) im.addEventListener('load', schedulePlacement, { once: true });
+  });
+  schedulePlacement();
+  /* Archivo Black can swap in after fonts.ready resolves, which changes the
+     glyph metrics the placement was measured from — re-run as a safety net. */
+  setTimeout(schedulePlacement, 400);
+  setTimeout(schedulePlacement, 1400);
 
   /* ---------- Eased anchor scrolling (cancellable) ---------- */
   let scrollAnim = 0;
